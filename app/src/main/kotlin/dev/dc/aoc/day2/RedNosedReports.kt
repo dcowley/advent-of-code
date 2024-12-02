@@ -9,8 +9,10 @@ fun main() {
 
     val levels = inputLines.map { it.split(' ').map(String::toInt) }
     val isSafe = levels.count { isSafe(it) || isSafe(it.reversed()) }
+    val isSafeWithDampener = levels.count { isSafeWithDampener(it) || isSafeWithDampener(it.reversed()) }
 
     println("Safe levels: $isSafe")
+    println("Safe levels with dampener: $isSafeWithDampener")
 }
 
 fun isSafe(levels: List<Int>): Boolean {
@@ -18,4 +20,12 @@ fun isSafe(levels: List<Int>): Boolean {
         levels[i + 1] - levels[i]
     }
     return diff.all { it in 1..3 }
+}
+
+fun isSafeWithDampener(levels: List<Int>): Boolean {
+    return levels.indices.any { index ->
+        isSafe(levels.toMutableList().also {
+            it.removeAt(index)
+        })
+    }
 }
