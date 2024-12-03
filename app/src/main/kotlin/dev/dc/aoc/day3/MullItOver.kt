@@ -15,4 +15,12 @@ fun main() {
             acc + (l * r)
         }
     println("Part 1: $part1")
+
+    val isDisabled = "don't\\(\\)((.|\\n)*?)do\\(\\)".toRegex()
+    val part2 = isMultiply.findAll(input.replace(isDisabled, "")).fold(0) { acc, match ->
+        val l = match.groups[1]?.value?.toInt() ?: 0
+        val r = match.groups[2]?.value?.toInt() ?: 0
+        acc + l * r
+    }
+    println("Part 2: $part2")
 }
