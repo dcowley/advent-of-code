@@ -32,4 +32,26 @@ fun main() {
         }
     }
     println(part1)
+
+    val part2 = updates.fold(0) { acc, update ->
+        val isValid = update.all { i ->
+            rules
+                .filter { it.first == i }
+                .none { it.second in update.slice(0..update.indexOf(i)) }
+        }
+        if (!isValid) {
+            val sorted = update.sortedWith { l, r ->
+                val rulesForPage = rules.filter { it.first == l }
+                if (rulesForPage.any { it.second == r }) {
+                    -1
+                } else {
+                    1
+                }
+            }
+            acc + sorted[sorted.size / 2]
+        } else {
+            acc
+        }
+    }
+    println(part2)
 }
