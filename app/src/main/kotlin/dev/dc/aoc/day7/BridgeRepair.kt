@@ -4,6 +4,7 @@ import java.io.FileNotFoundException
 
 fun main() {
     part1()
+    part2()
 }
 
 fun part1() {
@@ -22,6 +23,35 @@ fun part1() {
                 when (permutation[index - 1]) {
                     '+' -> acc + next
                     '*' -> acc * next
+                    else -> throw UnsupportedOperationException("Invalid operator ${permutation[index]}")
+                }
+            }
+            results[i] == result
+        }
+        if (hasSolution) {
+            solution += results[i]
+        }
+    }
+    println(solution)
+}
+
+fun part2() {
+    val inputFileName = "puzzles/7"
+    val inputFile = ClassLoader.getSystemResourceAsStream(inputFileName) ?: throw FileNotFoundException(inputFileName)
+    val input = inputFile.bufferedReader().readLines()
+
+    val results = input.map { it.substringBefore(':').toLong() }
+    val numbers = input.map { it.substringAfter(": ").split(' ').map(String::toLong) }
+
+    var solution = 0L
+    numbers.forEachIndexed { i, ints ->
+        val operatorPermutations = permutations(charArrayOf('+', '*', '|'), ints.size - 1)
+        val hasSolution = operatorPermutations.any { permutation ->
+            val result = ints.reduceIndexed { index, acc, next ->
+                when (permutation[index - 1]) {
+                    '+' -> acc + next
+                    '*' -> acc * next
+                    '|' -> "$acc$next".toLong()
                     else -> throw UnsupportedOperationException("Invalid operator ${permutation[index]}")
                 }
             }
